@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Сергей Рычагов](https://up.htmlacademy.ru/javascript/18/user/648211).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Смирнов](https://htmlacademy.ru/profile/id516117).
 
 ---
 

@@ -12,6 +12,7 @@ var NAMES = ['Артем', 'Николай', 'Юля', 'Анастасия', 'Д
 
 var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 var pictureContainer = document.querySelector('.pictures');
+var bigPictureElement = document.querySelector('.big-picture');
 
 var getPhoto = function (n) {
   var result = [];
@@ -41,7 +42,7 @@ var getComments = function () {
 
 var createComment = function () {
   return {
-    avatar: 'img/' + getRandom(1, 6) + '.svg',
+    avatar: 'img/avatar-' + getRandom(1, 6) + '.svg',
     message: getMessage(),
     name: getRandomItem(NAMES),
   };
@@ -64,8 +65,33 @@ var getMessage = function () {
   return message.join(' ');
 };
 
-var picturesFragment = document.createDocumentFragment();
+var getCommentElement = function (comment) {
+  var liElement = document.createElement('li');
+  liElement.classList.add('cocial__comment');
+  var pElement = document.createElement('p');
+  pElement.classList.add('social__text');
+  pElement.textContent = comment.message;
+  var imgElement = document.createElement('img');
+  imgElement.classList.add('social__picture');
+  imgElement.src = comment.avatar;
+  imgElement.alt = comment.name;
+  imgElement.width = 35;
+  imgElement.height = 35;
+  liElement.appendChild(imgElement);
+  liElement.appendChild(pElement);
 
+  return liElement;
+};
+
+var getCommentsFragment = function (comments) {
+  var fragment = document.createDocumentFragment();
+  for (var j = 0; j < comments.length; j++) {
+    fragment.appendChild(getCommentElement(comments[j]));
+  }
+  return fragment;
+};
+
+var picturesFragment = document.createDocumentFragment();
 var pictures = getPhoto(25);
 for (var i = 0; i < pictures.length; i++) {
   var pictureElement = pictureTemplate.cloneNode(true);
@@ -78,3 +104,18 @@ for (var i = 0; i < pictures.length; i++) {
   picturesFragment.appendChild(pictureElement);
 }
 pictureContainer.appendChild(picturesFragment);
+
+var showBigPicture = function (photo) {
+  bigPictureElement.querySelector('.big-picture__img img').src = photo.url;
+  bigPictureElement.querySelector('.likes-count').textContent = photo.likes;
+  bigPictureElement.querySelector('.comments-count').textContent = photo.comments.length;
+  bigPictureElement.querySelector('.social__comments').innerHTML = '';
+  bigPictureElement.querySelector('.social__comments').appendChild(getCommentsFragment(photo.comments));
+  bigPictureElement.querySelector('.social__caption').textContent = photo.description;
+  bigPictureElement.querySelector('.social__comment-count').classList.add('visually-hidden');
+  bigPictureElement.querySelector('.comments-loader').classList.add('visually-hidden');
+
+  bigPictureElement.classList.remove('hidden');
+};
+
+showBigPicture(pictures[2]);

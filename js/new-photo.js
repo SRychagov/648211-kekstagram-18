@@ -7,6 +7,9 @@
   var ESC_KEYCODE = 27;
   var EFFECT_NAME = 'none';
   var IS_IN_FOCUS = false;
+  var MAX_PIN_POS = 450;
+  var MIN_PIN_POS = 0;
+  var MAX_PERCENT = 100;
 
   var uploadFileElement = document.querySelector('#upload-file');
   var buttonCloseElement = document.querySelector('#upload-cancel');
@@ -65,8 +68,6 @@
 
   var imgUploadPinElement = document.querySelector('.img-upload__effect-level');
   var imgUploadEffectsElement = document.querySelector('.img-upload__effects');
-  var effectLevelValueElement = document.querySelector('.effect-level__value');
-  var effectLevelValue = effectLevelValueElement.value;
 
   imgUploadEffectsElement.addEventListener('change', function (evt) {
     var effect = evt.target.value;
@@ -80,13 +81,7 @@
     imgUploadElement.className = '';
     imgUploadElement.style = '';
     imgUploadElement.classList.add('effects__preview--' + effect);
-  });
-
-  var effectPinElement = document.querySelector('.effect-level__pin');
-  effectPinElement.addEventListener('mouseup', function () {
-    if (EFFECT_NAME !== 'none') {
-      imgUploadElement.style.filter = getFilterStyle(EFFECT_NAME, effectLevelValue);
-    }
+    setPinPosition(MAX_PERCENT);
   });
 
   // <--  Функция выбора эффекта  -->
@@ -100,5 +95,42 @@
       default: return '';
     }
   };
+
+  var effectPinElement = imageOverlayElement.querySelector('.effect-level__pin');
+  var effectDepthElement = imageOverlayElement.querySelector('.effect-level__depth');
+
+  effectPinElement.addEventListener('mousedown', function (evt) {
+    var pinX = effectPinElement.offsetLeft;
+    var startX = evt.clientX;
+
+    var onMouseMove = function (moveEvt) {
+      var shiftX = moveEvt.clientX - startX;
+      startX = moveEvt.clientX;
+      var futureX = pinX + shiftX;
+      if (futureX >= MIN_PIN_POS && futureX <= MAX_PIN_POS) {
+        pinX = futureX;
+        setEffectDepth(futureX / MAX_PIN_POS * 100);
+      }
+    };
+    var onMouseUp = function () {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+
+  var setPinPosition = function (pos) {
+    var x = MAX_PIN_POS / 100 * pos;
+    effectPinElement.style.left = x + 'px';
+    effectDepthElement.style.width = x + 'px';
+  };
+
+  var setEffectDepth = function (depth) {
+    imgUploadElement.style.filter = getFilterStyle(EFFECT_NAME, depth);
+    setPinPosition(depth);
+  };
+
   window.IS_IN_FOCUS = IS_IN_FOCUS;
 })();

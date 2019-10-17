@@ -5,11 +5,13 @@
   var MIN_VALUE = 25;
   var MAX_VALUE = 100;
   var ESC_KEYCODE = 27;
-  var EFFECT_NAME = 'none';
   var IS_IN_FOCUS = false;
   var MAX_PIN_POS = 450;
   var MIN_PIN_POS = 0;
   var MAX_PERCENT = 100;
+  var DEFAULT_EFFECT_NAME = 'none';
+
+  var effectName = DEFAULT_EFFECT_NAME;
 
   var uploadFileElement = document.querySelector('#upload-file');
   var buttonCloseElement = document.querySelector('#upload-cancel');
@@ -24,9 +26,18 @@
     closePopup();
   });
 
+  var setDefault = function () {
+    effectName = DEFAULT_EFFECT_NAME;
+    imgUploadElement.className = '';
+    imgUploadPinElement.classList.add('hidden');
+    setEffectDepth(MAX_PERCENT);
+    transformSizeImage(MAX_PERCENT);
+  };
+
   // <-- Функция закрытия окна с фотографией -->
   var closePopup = function () {
     imageOverlayElement.classList.add('hidden');
+    setDefault();
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
@@ -77,7 +88,7 @@
       imgUploadPinElement.classList.remove('hidden');
     }
 
-    EFFECT_NAME = effect;
+    effectName = effect;
     imgUploadElement.className = '';
     imgUploadElement.style = '';
     imgUploadElement.classList.add('effects__preview--' + effect);
@@ -128,9 +139,10 @@
   };
 
   var setEffectDepth = function (depth) {
-    imgUploadElement.style.filter = getFilterStyle(EFFECT_NAME, depth);
+    imgUploadElement.style.filter = getFilterStyle(effectName, depth);
     setPinPosition(depth);
   };
 
+  window.closePopup = closePopup;
   window.IS_IN_FOCUS = IS_IN_FOCUS;
 })();

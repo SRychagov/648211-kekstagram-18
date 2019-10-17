@@ -3,6 +3,7 @@
 (function () {
   var hastagsElement = document.querySelector('.text__hashtags');
   var textDescriptionElement = document.querySelector('.text__description');
+  var formElement = document.querySelector('#upload-select-image');
 
   hastagsElement.addEventListener('focus', function () {
     setIsFieldInFocus(true);
@@ -67,4 +68,19 @@
     window.IS_IN_FOCUS = is;
   };
 
+  var onSuccess = function () {
+    window.showSuccess();
+  };
+
+  var onError = function (nameError) {
+    window.showError(nameError);
+  };
+
+  formElement.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    var formData = new FormData(formElement);
+    window.upload(formData, onSuccess, onError);
+    formElement.reset();
+    window.closePopup();
+  });
 })();

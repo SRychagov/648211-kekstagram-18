@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var ESC_KEYCODE = 27;
+
   window.showError = function (nameError, onTryAgain) {
     var errorTemplate = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
     errorTemplate.querySelector('.error__title').textContent = nameError;
@@ -13,9 +15,22 @@
 
     buttonElement.addEventListener('click', function () {
       mainElement.removeChild(errorTemplate);
-      onTryAgain();
+      if (typeof onTryAgain === 'function') {
+        onTryAgain();
+      }
     });
-
+    errorTemplate.addEventListener('click', function (evt) {
+      if (evt.target === errorTemplate) {
+        mainElement.removeChild(errorTemplate);
+      }
+    });
+    var onEscPress = function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        document.removeEventListener('keydown', onEscPress);
+        mainElement.removeChild(errorTemplate);
+      }
+    };
+    document.addEventListener('keydown', onEscPress);
     errorTemplate.querySelector('.error__buttons').appendChild(buttonElement);
     mainElement.appendChild(errorTemplate);
   };

@@ -2,8 +2,10 @@
 
 (function () {
   var ESC_KEYCODE = 27;
+  var MAX_COMMENTS = 5;
   var bigPictureElement = document.querySelector('.big-picture');
   var pictureCancelElement = bigPictureElement.querySelector('.big-picture__cancel');
+  var commentsLoaderElement = bigPictureElement.querySelector('.comments-loader');
 
   pictureCancelElement.addEventListener('click', function () {
     bigPictureElement.classList.add('hidden');
@@ -39,15 +41,31 @@
 
   // <-- Функция заполнения большого фото данными  -->
   var showBigPicture = function (photo) {
+    var loaderClickCount = 0;
+
+    var renderComments = function () {
+      var start = loaderClickCount * MAX_COMMENTS;
+      var end = start + MAX_COMMENTS;
+      var comments = photo.comments.slice(start, end);
+      var commentsElement = getCommentsFragment(comments);
+      bigPictureElement.querySelector('.social__comments').appendChild(commentsElement);
+      loaderClickCount++;
+      if (photo.comments.length <= end) {
+        commentsLoaderElement.classList.add('visually-hidden');
+      } else {
+        commentsLoaderElement.classList.remove('visually-hidden');
+      }
+    };
 
     bigPictureElement.querySelector('.big-picture__img img').src = photo.url;
     bigPictureElement.querySelector('.likes-count').textContent = photo.likes;
-    bigPictureElement.querySelector('.comments-count').textContent = photo.comments.length; // ?
-    bigPictureElement.querySelector('.social__comments').innerHTML = ''; // ?
-    bigPictureElement.querySelector('.social__comments').appendChild(getCommentsFragment(photo.comments));
+    bigPictureElement.querySelector('.comments-count').textContent = photo.comments.length;
+    bigPictureElement.querySelector('.social__comments').innerHTML = '';
+    renderComments();
     bigPictureElement.querySelector('.social__caption').textContent = photo.description;
     bigPictureElement.querySelector('.social__comment-count').classList.add('visually-hidden');
-    bigPictureElement.querySelector('.comments-loader').classList.add('visually-hidden');
+
+    commentsLoaderElement.addEventListener('click', renderComments);
 
     bigPictureElement.classList.remove('hidden');
     document.addEventListener('keydown', onBigPictureEscPress);

@@ -1,10 +1,6 @@
 'use strict';
 
 (function () {
-  // <--  Функция получения случайного элемента из массива  -->
-  // var getRandomItem = function (arr) {
-  //   return arr[getRandom(0, arr.length - 1)];
-  // };
   var WAIT = 500;
   var debounce = function (func) {
     var timeout;

@@ -55,5 +55,6 @@
     var imgFilterElement = document.querySelector('.img-filters');
     imgFilterElement.classList.remove('img-filters--inactive');
   };
+
   window.showFilters = showFilters;
 })();

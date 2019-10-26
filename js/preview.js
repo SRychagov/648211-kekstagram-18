@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var ESC_KEYCODE = 27;
   var MAX_COMMENTS = 5;
   var bigPictureElement = document.querySelector('.big-picture');
   var pictureCancelElement = bigPictureElement.querySelector('.big-picture__cancel');
@@ -73,7 +72,7 @@
 
   // <-- Функция закрытия окна с фотографией по кнопке esc  -->
   var onBigPictureEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
+    if (evt.keyCode === window.util.ESC_KEYCODE) {
       bigPictureElement.classList.add('hidden');
       document.removeEventListener('keydown', onBigPictureEscPress);
     }

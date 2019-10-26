@@ -1,7 +1,9 @@
 'use strict';
 
 (function () {
+  var ESC_KEYCODE = 27;
   var WAIT = 500;
+
   var debounce = function (func) {
     var timeout;
     return function () {
@@ -22,6 +24,7 @@
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
   window.util = {
+    ESC_KEYCODE: ESC_KEYCODE,
     getRandom: getRandom,
     debounce: debounce,
   };

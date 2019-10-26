@@ -4,7 +4,6 @@
   var STEP = 25;
   var MIN_VALUE = 25;
   var MAX_VALUE = 100;
-  var ESC_KEYCODE = 27;
   var IS_IN_FOCUS = false;
   var MAX_PIN_POS = 450;
   var MIN_PIN_POS = 0;
@@ -13,13 +12,13 @@
 
   var effectName = DEFAULT_EFFECT_NAME;
 
-  var uploadFileElement = document.querySelector('#upload-file');
   var buttonCloseElement = document.querySelector('#upload-cancel');
   var imageOverlayElement = document.querySelector('.img-upload__overlay');
 
-  uploadFileElement.addEventListener('change', function () {
+  window.choose(function (dataURL) {
     imageOverlayElement.classList.remove('hidden');
     document.addEventListener('keydown', onPopupEscPress);
+    imgUploadElement.src = dataURL;
   });
 
   buttonCloseElement.addEventListener('click', function () {
@@ -43,7 +42,7 @@
 
   // <-- Функция закрытия окна по esc или потери фокуса у поля с тегами  -->
   var onPopupEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE && !IS_IN_FOCUS) {
+    if (evt.keyCode === window.util.ESC_KEYCODE && !IS_IN_FOCUS) {
       closePopup();
     }
   };
@@ -143,6 +142,8 @@
     setPinPosition(depth);
   };
 
-  window.closePopup = closePopup;
-  window.IS_IN_FOCUS = IS_IN_FOCUS;
+  window.newPhoto = {
+    closePopup: closePopup,
+    IS_IN_FOCUS: IS_IN_FOCUS,
+  };
 })();

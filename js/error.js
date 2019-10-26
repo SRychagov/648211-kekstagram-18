@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var ESC_KEYCODE = 27;
-
   window.showError = function (nameError, onTryAgain) {
     var errorTemplate = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
     errorTemplate.querySelector('.error__title').textContent = nameError;
@@ -25,7 +23,7 @@
       }
     });
     var onEscPress = function (evt) {
-      if (evt.keyCode === ESC_KEYCODE) {
+      if (evt.keyCode === window.util.ESC_KEYCODE) {
         document.removeEventListener('keydown', onEscPress);
         mainElement.removeChild(errorTemplate);
       }

@@ -65,7 +65,7 @@
   };
 
   var setIsFieldInFocus = function (is) {
-    window.IS_IN_FOCUS = is;
+    window.newPhoto.IS_IN_FOCUS = is;
   };
 
   var onSuccess = function () {
@@ -81,6 +81,6 @@
     var formData = new FormData(formElement);
     window.upload(formData, onSuccess, onError);
     formElement.reset();
-    window.closePopup();
+    window.newPhoto.closePopup();
   });
 })();

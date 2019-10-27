@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var MAX_TAG_LENGTH = 20;
+  var MAX_TAG_COUNT = 5;
+
   var hastagsElement = document.querySelector('.text__hashtags');
   var textDescriptionElement = document.querySelector('.text__description');
   var formElement = document.querySelector('#upload-select-image');
@@ -39,7 +42,7 @@
         if (validTags.indexOf(hashtags[j]) > -1) {
           return 'хэш-тег повторяется';
         }
-        if (validTags.length >= 5) {
+        if (validTags.length >= MAX_TAG_COUNT) {
           return 'нельзя писать больше пять хэш-тегов';
         }
         validTags.push(hashtags[j]);
@@ -58,14 +61,14 @@
     if (tag === '#') {
       return 'хэш-тег не может состоять только из одной решётки';
     }
-    if (tag.length > 20) {
+    if (tag.length > MAX_TAG_LENGTH) {
       return 'максимальная длинна хэш-тега 20 символов, включая решётку';
     }
     return '';
   };
 
   var setIsFieldInFocus = function (is) {
-    window.newPhoto.IS_IN_FOCUS = is;
+    window.newPhoto.setFocus(is);
   };
 
   var onSuccess = function () {

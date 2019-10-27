@@ -4,16 +4,17 @@
   var STEP = 25;
   var MIN_VALUE = 25;
   var MAX_VALUE = 100;
-  var IS_IN_FOCUS = false;
   var MAX_PIN_POS = 450;
   var MIN_PIN_POS = 0;
   var MAX_PERCENT = 100;
   var DEFAULT_EFFECT_NAME = 'none';
 
+  var isInFocus = false;
   var effectName = DEFAULT_EFFECT_NAME;
 
   var buttonCloseElement = document.querySelector('#upload-cancel');
   var imageOverlayElement = document.querySelector('.img-upload__overlay');
+  var imageFormElement = document.querySelector('.img-upload__form');
 
   window.choose(function (dataURL) {
     imageOverlayElement.classList.remove('hidden');
@@ -31,6 +32,7 @@
     imgUploadPinElement.classList.add('hidden');
     setEffectDepth(MAX_PERCENT);
     transformSizeImage(MAX_PERCENT);
+    imageFormElement.reset();
   };
 
   // <-- Функция закрытия окна с фотографией -->
@@ -42,7 +44,7 @@
 
   // <-- Функция закрытия окна по esc или потери фокуса у поля с тегами  -->
   var onPopupEscPress = function (evt) {
-    if (evt.keyCode === window.util.ESC_KEYCODE && !IS_IN_FOCUS) {
+    if (evt.keyCode === window.util.ESC_KEYCODE && !isInFocus) {
       closePopup();
     }
   };
@@ -142,8 +144,12 @@
     setPinPosition(depth);
   };
 
+  var setFocus = function (isSet) {
+    isInFocus = isSet;
+  };
+
   window.newPhoto = {
     closePopup: closePopup,
-    IS_IN_FOCUS: IS_IN_FOCUS,
+    setFocus: setFocus,
   };
 })();

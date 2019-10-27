@@ -2,13 +2,14 @@
 
 (function () {
   var BUTTON_CLASS = 'img-filters__button';
+  var RANDOM_PICTURES_COUNT = 10;
 
   var pictures = [];
 
   var getRandomPictures = function () {
     var res = [];
     var tempPics = pictures.slice();
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < RANDOM_PICTURES_COUNT; i++) {
       var randomIndex = window.util.getRandom(0, tempPics.length - 1);
       var splicedItem = tempPics.splice(randomIndex, 1);
       res.push(splicedItem[0]);

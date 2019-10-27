@@ -8,14 +8,12 @@
     var timeout;
     return function () {
       var args = arguments;
-      var later = function () {
+      var callLater = function () {
         timeout = null;
         func.apply(null, args);
-        // console.log('Я дождался');
       };
       clearTimeout(timeout);
-      // console.log('Меня убили');
-      timeout = setTimeout(later, WAIT);
+      timeout = setTimeout(callLater, WAIT);
     };
   };
 

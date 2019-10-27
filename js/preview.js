@@ -2,13 +2,10 @@
 
 (function () {
   var MAX_COMMENTS = 5;
+
   var bigPictureElement = document.querySelector('.big-picture');
   var pictureCancelElement = bigPictureElement.querySelector('.big-picture__cancel');
   var commentsLoaderElement = bigPictureElement.querySelector('.comments-loader');
-
-  pictureCancelElement.addEventListener('click', function () {
-    bigPictureElement.classList.add('hidden');
-  });
 
   // <--  Функция создания каждого комментария  -->
   var getCommentElement = function (comment) {
@@ -32,15 +29,32 @@
   // <--  Функция формирования всех комментариев  -->
   var getCommentsFragment = function (comments) {
     var fragment = document.createDocumentFragment();
-    for (var j = 0; j < comments.length; j++) {
-      fragment.appendChild(getCommentElement(comments[j]));
-    }
+    comments.forEach(function (comment) {
+      fragment.appendChild(getCommentElement(comment));
+    });
     return fragment;
   };
 
   // <-- Функция заполнения большого фото данными  -->
   var showBigPicture = function (photo) {
     var loaderClickCount = 0;
+
+    var closePicture = function () {
+      bigPictureElement.classList.add('hidden');
+      commentsLoaderElement.removeEventListener('click', renderComments);
+    };
+
+    pictureCancelElement.addEventListener('click', function () {
+      closePicture();
+    });
+
+    // <-- Функция закрытия окна с фотографией по кнопке esc  -->
+    var onBigPictureEscPress = function (evt) {
+      if (evt.keyCode === window.util.ESC_KEYCODE) {
+        closePicture();
+        document.removeEventListener('keydown', onBigPictureEscPress);
+      }
+    };
 
     var renderComments = function () {
       var start = loaderClickCount * MAX_COMMENTS;
@@ -68,14 +82,6 @@
 
     bigPictureElement.classList.remove('hidden');
     document.addEventListener('keydown', onBigPictureEscPress);
-  };
-
-  // <-- Функция закрытия окна с фотографией по кнопке esc  -->
-  var onBigPictureEscPress = function (evt) {
-    if (evt.keyCode === window.util.ESC_KEYCODE) {
-      bigPictureElement.classList.add('hidden');
-      document.removeEventListener('keydown', onBigPictureEscPress);
-    }
   };
 
   window.showBigPicture = showBigPicture;

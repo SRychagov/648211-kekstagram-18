@@ -10,8 +10,8 @@
     });
     var onEscPress = function (evt) {
       if (evt.keyCode === window.util.ESC_KEYCODE) {
-        document.removeEventListener('keydown', onEscPress);
         mainElement.removeChild(successTemplate);
+        document.removeEventListener('keydown', onEscPress);
       }
     };
     document.addEventListener('keydown', onEscPress);

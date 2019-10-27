@@ -9,10 +9,9 @@
     });
 
     var picturesFragment = document.createDocumentFragment();
-
-    for (var i = 0; i < pictures.length; i++) {
-      picturesFragment.appendChild(window.getPictureElement(pictures[i], i));
-    }
+    pictures.forEach(function (picture, i) {
+      picturesFragment.appendChild(window.getPictureElement(picture, i));
+    });
     pictureContainer.appendChild(picturesFragment);
 
     pictureContainer.addEventListener('click', function (evt) {

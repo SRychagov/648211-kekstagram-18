@@ -34,7 +34,9 @@
     if (value === '') {
       return '';
     }
-    var hashtags = value.toLowerCase().split(' ');
+    var hashtags = value.trim().toLowerCase().split(' ').filter(function (it) {
+      return it !== '';
+    });
     var validTags = [];
     for (var j = 0; j < hashtags.length; j++) {
       var message = getValidationTag(hashtags[j]);
